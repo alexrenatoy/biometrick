@@ -1,4 +1,6 @@
+import 'package:biometrick/views/add.dart';
 import 'package:biometrick/views/cards_view.dart';
+import 'package:biometrick/views/home.dart';
 import 'package:biometrick/views/home_view.dart';
 import 'package:biometrick/views/landpage_view.dart';
 import 'package:biometrick/views/login_view.dart';
@@ -14,6 +16,8 @@ import 'package:flutter/material.dart';
 
 class CustomRoutes {
   static final routes = <String, WidgetBuilder>{
+    Home.id: (context) => const Home(),
+    Add.id: (context) => const Add(),
     LandPageView.id: (context) => const LandPageView(),
     LoginView.id: (context) => const LoginView(),
     RegisterView.id: (context) => const RegisterView(),

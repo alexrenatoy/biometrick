@@ -1,17 +1,19 @@
 import 'package:biometrick/router/routes.dart';
+import 'package:biometrick/views/home.dart';
 import 'package:biometrick/views/landpage_view.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 
-Future <void> main() async {
-  WidgetsFlutterBinding.ensureInitialized(); 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
+}
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
-
-  runApp(const MyApp());
-  }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -21,9 +23,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Don Gestin C:',
-      theme: ThemeData.dark(),
-      initialRoute: LandPageView.id,
+      // theme: ThemeData.dark(),
+      initialRoute: Home.id,
       routes: CustomRoutes.routes,
     );
   }
 }
+
