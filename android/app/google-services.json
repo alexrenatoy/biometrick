@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "237072452513",
+    "project_id": "local-test-alstreid",
+    "storage_bucket": "local-test-alstreid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237072452513:android:7a080a0e3ecb2533ce19e0",
+        "android_client_info": {
+          "package_name": "com.example.biometrick.alstreid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTazWhEQ7TDlV_du1G0mFu3ZGOcj8T2jQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
