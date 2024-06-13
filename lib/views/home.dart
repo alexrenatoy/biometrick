@@ -23,22 +23,34 @@ class _HomePageState extends State<Home> {
         backgroundColor: Color.fromARGB(136, 26, 72, 223),
       ),
       body: FutureBuilder(
-          future: getUsers(),
-          builder: ((context, snapshot) {
-            // return const Text('Hola Chicos');
+        future: getUsers(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Mientras el futuro se está resolviendo, puedes mostrar un indicador de carga
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            // Si ocurre un error, puedes mostrar un mensaje de error
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            // Si no hay datos, muestra un mensaje adecuado
+            return Center(child: Text('No data available'));
+          } else {
+            // Si hay datos, construye la lista
             return ListView.builder(
-                itemCount: snapshot.data?.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Text(snapshot.data?[index]["name"]),
-                      // Text(snapshot.data?[index]["age"]),
-                      Text(snapshot.data?[index]["email"]),
-
-                    ],
-                  );
-                });
-          })),
+              itemCount: snapshot.data?.length,
+              itemBuilder: (context, index) {
+                final user = snapshot.data?[index];
+                return Column(
+                  children: [
+                    Text(user["name"] ?? 'No name'),
+                    Text(user["email"] ?? 'No email'),
+                  ],
+                );
+              },
+            );
+          }
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, Add.id);

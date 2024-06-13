@@ -1,4 +1,4 @@
-package com.example.biometrick
+package com.example.biometrick.alstreid
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

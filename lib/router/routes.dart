@@ -1,31 +1,60 @@
-import 'package:biometrick/views/add.dart';
-import 'package:biometrick/views/cards_view.dart';
-import 'package:biometrick/views/home.dart';
-import 'package:biometrick/views/home_view.dart';
-import 'package:biometrick/views/landpage_view.dart';
-import 'package:biometrick/views/login_view.dart';
-import 'package:biometrick/views/main_view.dart';
-import 'package:biometrick/views/register.dart';
-import 'package:biometrick/views/reminders_view.dart';
-import 'package:biometrick/views/saving_plans_view.dart';
-import 'package:biometrick/views/wallet_view.dart';
+import 'package:biometrick/views/assitance.dart';
+import 'package:biometrick/views/auth.dart';
 import 'package:flutter/material.dart';
 
 
+class Router {
+  static Route<dynamic>? generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case AssitanceView.id:
+        return MaterialPageRoute(
+          builder: (_) => AssitanceView(),
+        );
+      case AuthBiometric.id:
+        // Si la ruta requiere un valor (cedula en este caso), puedes pasarla a través de arguments
+        if (settings.arguments != null && settings.arguments is String) {
+          String idUser = settings.arguments as String;
+          return MaterialPageRoute(
+            builder: (_) => AuthBiometric(idUser: idUser),
+          );
+        }
+        // Manejo de error o redireccionar a una página por defecto si no se proporciona la cédula
+        return _errorRoute(); // Ejemplo de función _errorRoute() que muestra una página de error
+      default:
+        // Manejo de ruta no encontrada
+        return _errorRoute();
+    }
+  }
 
-
-class CustomRoutes {
-  static final routes = <String, WidgetBuilder>{
-    Home.id: (context) => const Home(),
-    Add.id: (context) => const Add(),
-    LandPageView.id: (context) => const LandPageView(),
-    LoginView.id: (context) => const LoginView(),
-    RegisterView.id: (context) => const RegisterView(),
-    HomeView.id: (context) => const HomeView(),
-    WalletView.id: (context) => const WalletView(),
-    RemindersView.id: (context) => const RemindersView(),
-    MainView.id: (context) => const MainView(),
-    SavingsPlansView.id: (context) => const SavingsPlansView(),
-    CardsView.id: (context) => const CardsView(),
-  };
+  static Route<dynamic> _errorRoute() {
+    return MaterialPageRoute(
+      builder: (_) => Scaffold(
+        appBar: AppBar(title: Text('Error')),
+        body: Center(child: Text('Ruta no encontrada')),
+      ),
+    );
+  }
 }
+
+
+
+
+// class CustomRoutes {
+//   static final routes = <String, WidgetBuilder>{
+//     Home.id: (context) => const Home(),
+//     AuthBiometric.id: (context) => const AuthBiometric(idUser),
+//     AssitanceView.id: (context) => AssitanceView(),
+//     AssitanceView.id: (context) => const Authentificated(),
+
+//     Add.id: (context) => const Add(),
+//     LandPageView.id: (context) => const LandPageView(),
+//     LoginView.id: (context) => const LoginView(),
+//     RegisterView.id: (context) => const RegisterView(),
+//     HomeView.id: (context) => const HomeView(),
+//     WalletView.id: (context) => const WalletView(),
+//     RemindersView.id: (context) => const RemindersView(),
+//     MainView.id: (context) => const MainView(),
+//     SavingsPlansView.id: (context) => const SavingsPlansView(),
+//     CardsView.id: (context) => const CardsView(),
+//   };
+// }

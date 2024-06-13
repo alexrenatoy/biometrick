@@ -1,14 +1,16 @@
-import 'package:biometrick/services/auth_service.dart';
+import 'package:biometrick/views/assitance.dart';
+import 'package:biometrick/views/firebase_service.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_darwin/local_auth_darwin.dart';
-import 'package:biometrick/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 
 class AuthBiometric extends StatefulWidget {
-  static String id = 'auth';
-  const AuthBiometric({super.key});
+  static const String id = 'auth';
+  final String idUser;
+
+  const AuthBiometric({super.key, required this.idUser});
 
   @override
   State<AuthBiometric> createState() => _AuthBiometricState();
@@ -21,7 +23,7 @@ class _AuthBiometricState extends State<AuthBiometric> {
   bool _isAuthenticated = false;
 
   @override
-  void initState() {   
+  void initState() {
     super.initState();
     _checkBiometric();
     _listBioFingerType();
@@ -31,7 +33,9 @@ class _AuthBiometricState extends State<AuthBiometric> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Sistema de asistencia - Biometrick'),),
+        title: const Center(
+          child: Text('Sistema de asistencia - Biometrick'),
+        ),
         elevation: 0,
       ),
       body: Center(
@@ -39,16 +43,20 @@ class _AuthBiometricState extends State<AuthBiometric> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             IconButton(
-              onPressed: _startAuth, 
+              onPressed: _startAuth,
               icon: Icon(Icons.fingerprint),
               iconSize: 80,
-              ),
-              const SizedBox(height: 15,),
-              const Text('Ingrese su huella dáctilar',
-              style: TextStyle(fontSize: 20.0),)
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            const Text(
+              'Escanea tu  huella dáctilar',
+              style: TextStyle(fontSize: 20.0),
+            )
           ],
         ),
-        ),
+      ),
     );
   }
 
@@ -59,13 +67,19 @@ class _AuthBiometricState extends State<AuthBiometric> {
         _checkBio = bio;
       });
       print('Biometrics - $_checkBio');
-    }catch (e) {}
+    } catch (e) {}
   }
+
   void _listBioFingerType() async {
     late List<BiometricType> _listType;
     try {
       _listType = await _auth.getAvailableBiometrics();
-    }on PlatformException catch (e) {
+      if (_listType.contains(BiometricType.fingerprint)) {
+        setState(() {
+          _isBioFinger = true;
+        });
+      }
+    } on PlatformException catch (e) {
       print(e.message);
     }
   }
@@ -73,24 +87,36 @@ class _AuthBiometricState extends State<AuthBiometric> {
   void _startAuth() async {
     try {
       _isAuthenticated = await _auth.authenticate(
-        localizedReason: 'Escanea tu huella',
-        authMessages: const <AuthMessages>[
-        AndroidAuthMessages(
-          signInTitle: 'Huella Biometrica requerida',
-          cancelButton: 'No, gracias'
-        )
-        ],                    
-        options: const AuthenticationOptions(
-          biometricOnly: true,
-          useErrorDialogs: true,
-          stickyAuth: true,          
-        ));
+          localizedReason: 'Escanea tu huella',
+          authMessages: const <AuthMessages>[
+            AndroidAuthMessages(
+                signInTitle: 'Huella Biometrica requerida',
+                cancelButton: 'No, gracias')
+          ],
+          options: const AuthenticationOptions(
+            biometricOnly: true,
+            useErrorDialogs: true,
+            stickyAuth: true,
+          ));
     } on PlatformException catch (e) {
-      print(e.message);
+      print('Error en autenticación biométrica: $e');
     }
-    if (_isAuthenticated){
-      Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (c) => Home()));
+    if (_isAuthenticated) {
+      _uploadUserData();
+      
+      Navigator.pop(context, AssitanceView.id);
     }
   }
+
+  void _uploadUserData() async {
+    String user = widget.idUser;
+
+    try {
+      await addAssistence(user);
+    
+    } catch (e) {
+      print('Error al subir datos de usuariio--------');
+    }
+  }
+
 }

@@ -18,6 +18,8 @@ dependencies:
   firebase_core: ^3.1.0
   cloud_firestore: ^5.0.0
   local_auth: ^2.2.0
+  intl: ^0.17.0 
+  timezone: ^0.7.0
 
 dev_dependencies:
   flutter_test:
