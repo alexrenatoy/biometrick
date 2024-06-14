@@ -1,14 +1,19 @@
-import 'package:biometrick/views/assitance.dart';
+import 'package:biometrick/views/assistance.dart';
 import 'package:biometrick/views/auth.dart';
+import 'package:biometrick/views/home.dart';
 import 'package:flutter/material.dart';
 
 
 class Router {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case AssitanceView.id:
+      case Home.id:
         return MaterialPageRoute(
-          builder: (_) => AssitanceView(),
+          builder: (_) => Home(),
+        );
+      case AssistanceView.id:
+        return MaterialPageRoute(
+          builder: (_) => AssistanceView(),
         );
       case AuthBiometric.id:
         // Si la ruta requiere un valor (cedula en este caso), puedes pasarla a través de arguments

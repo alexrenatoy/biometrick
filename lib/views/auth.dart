@@ -1,5 +1,6 @@
-import 'package:biometrick/views/assitance.dart';
+import 'package:biometrick/views/assistance.dart';
 import 'package:biometrick/views/firebase_service.dart';
+import 'package:biometrick/views/home.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_darwin/local_auth_darwin.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,7 @@ import 'package:local_auth/local_auth.dart';
 
 class AuthBiometric extends StatefulWidget {
   static const String id = 'auth';
-  final String idUser;
-
+  final String idUser;  
   const AuthBiometric({super.key, required this.idUser});
 
   @override
@@ -17,6 +17,7 @@ class AuthBiometric extends StatefulWidget {
 }
 
 class _AuthBiometricState extends State<AuthBiometric> {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final LocalAuthentication _auth = LocalAuthentication();
   bool _checkBio = false;
   bool _isBioFinger = false;
@@ -98,24 +99,29 @@ class _AuthBiometricState extends State<AuthBiometric> {
             useErrorDialogs: true,
             stickyAuth: true,
           ));
+        
     } on PlatformException catch (e) {
       print('Error en autenticación biométrica: $e');
     }
     if (_isAuthenticated) {
-      _uploadUserData();
-      
-      Navigator.pop(context, AssitanceView.id);
+      _uploadUserData();            
     }
   }
 
   void _uploadUserData() async {
     String user = widget.idUser;
-
+    print(user);
     try {
-      await addAssistence(user);
-    
+      bool success = await addAssistence(context, user);
+      if (success){
+        Navigator.pop(context, Home.id);
+      } else {
+        Navigator.pop(context, AssistanceView.id);
+      }
+
+
     } catch (e) {
-      print('Error al subir datos de usuariio--------');
+      print('Error al subir datos de usuariio--------');     
     }
   }
 

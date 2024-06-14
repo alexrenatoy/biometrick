@@ -2,16 +2,16 @@ import 'package:biometrick/views/auth.dart';
 import 'package:flutter/material.dart';
 
 
-class AssitanceView extends StatefulWidget {
+class AssistanceView extends StatefulWidget {
    static const String id = 'register';
-   const AssitanceView({super.key});
+   const AssistanceView({super.key});
 
 
   @override
-  State<AssitanceView> createState() => _AssitanceView();
+  State<AssistanceView> createState() => _AssistanceView();
 }
 
-class _AssitanceView extends State<AssitanceView> {
+class _AssistanceView extends State<AssistanceView> {
   final TextEditingController _cedulaController = TextEditingController();
 
   @override
@@ -38,8 +38,10 @@ class _AssitanceView extends State<AssitanceView> {
                   context,
                   MaterialPageRoute(builder: (context) => AuthBiometric(idUser: _cedulaController.text)),
                 );
+                 _cedulaController.clear();
               },
               child: Text('Registrar'),
+              
             ),
           ],
         ),
