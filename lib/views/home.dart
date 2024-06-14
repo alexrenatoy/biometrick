@@ -36,8 +36,10 @@ class _HomePageState extends State<Home> {
  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Registro de Asistencia'),
+      appBar: AppBar(    
+        centerTitle: true,    
+        title: Text('Registro de Asistencia',
+        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
       ),
       body: Center(
         child: Column(
