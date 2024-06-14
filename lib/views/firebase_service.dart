@@ -15,16 +15,22 @@ Future<List> getUsers() async {
   return users;
 }
 
-//ADD
-// Future<void> createUsers(String name) async {
-//   try {
-//     await db.collection('Users').add(({'Nombre': name }));
-//     print('Usuario creado exitosamente');
-//   } catch (e){
-//     print('Error al crear usuario: $e');
-//   }
+//ADD new user
+Future<bool> addNewUser(String idUser, String name, String email,String password,) async {
+  try {
+    await db.collection("users").add({
+        'id_user': idUser,
+        'name': name,
+        'email': email,
+        'password': password,
+      });
+    return true;
+  } catch (e){
+    print('Error al crear usuario: $e');
+    return false;
+  }
 
-// }
+}
 
 // Register
 

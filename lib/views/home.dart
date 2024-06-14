@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:biometrick/views/add.dart';
 import 'package:biometrick/views/assistance.dart';
 import 'package:biometrick/views/firebase_service.dart';
+import 'package:biometrick/views/register.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -33,13 +34,15 @@ class _HomePageState extends State<Home> {
     });
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(    
-        centerTitle: true,    
-        title: Text('Registro de Asistencia',
-        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Registro de Asistencia',
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Center(
         child: Column(
@@ -55,10 +58,39 @@ class _HomePageState extends State<Home> {
             ),
             SizedBox(height: 30),
             ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                    (Set<WidgetState> states) {
+                  if (states.contains(WidgetState.pressed)) {
+                    return const Color.fromARGB(255, 95, 95, 95);
+                  }
+                  return Colors.black;
+                }),
+                foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+              ),
               onPressed: () {
                 Navigator.pushNamed(context, AssistanceView.id);
               },
-              child: Text('Registrar'),
+              child: const Text('Registrarme'),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                    (Set<WidgetState> states) {
+                  if (states.contains(WidgetState.pressed)) {
+                    return const Color.fromARGB(255, 95, 95, 95);
+                  }
+                  return Colors.black;
+                }),
+                foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, RegisterView.id);
+              },
+              child: const Text('Crear nueva cuenta'),
             ),
           ],
         ),

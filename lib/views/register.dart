@@ -1,6 +1,8 @@
-
 import 'package:biometrick/utils/form_utils.dart';
 import 'package:biometrick/utils/validators.dart';
+import 'package:biometrick/views/assistance.dart';
+import 'package:biometrick/views/firebase_service.dart';
+import 'package:biometrick/views/home.dart';
 import 'package:biometrick/views/login_view.dart';
 import 'package:flutter/material.dart';
 
@@ -14,22 +16,30 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
+  final _iduserController = TextEditingController();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _register() {
+  void _register() async {
     if (_formKey.currentState?.validate() ?? false) {
       // Guardar los datos
-      final username = _usernameController.text;
+      final idUser = _iduserController.text;
+      final name = _usernameController.text;
       final email = _emailController.text;
       final password = _passwordController.text;
 
-      Navigator.pushNamed(context, LoginView.id, arguments: {
-        'username': username,
-        'email': email,
-        'password': password,
-      });
+      try {
+        bool res = await addNewUser(idUser, name, email, password);
+        if (res) {
+          Navigator.pushNamed(context, AssistanceView.id);          
+        } else {
+          Navigator.pushNamed(context, Home.id);   
+        }
+      } catch (e) {
+        print(e);        
+        //ventana de error
+      }
     }
   }
 
@@ -105,6 +115,12 @@ class _RegisterViewState extends State<RegisterView> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     InputField(
+                      controller: _iduserController,
+                      labelText: 'Número de identificación',
+                      suffixIcon: Icons.perm_identity,
+                      validator: validateNumericField,
+                    ),
+                    InputField(
                       controller: _usernameController,
                       labelText: 'Nickname',
                       suffixIcon: Icons.person,
@@ -122,24 +138,24 @@ class _RegisterViewState extends State<RegisterView> {
                       controller: _passwordController,
                       labelText: 'Contraseña',
                       suffixIcon: Icons.lock,
-                      validator: validatePassword,   
-                      isPassword: true,                   
+                      validator: validatePassword,
+                      isPassword: true,
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: _register,
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.pressed)) {
+                            WidgetStateProperty.resolveWith<Color>(
+                                (Set<WidgetState> states) {
+                          if (states.contains(WidgetState.pressed)) {
                             return Color.fromARGB(255, 95, 95, 95);
                           }
                           // Color de fondo normal
                           return const Color.fromARGB(255, 0, 0, 0);
                         }),
                         foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
+                            WidgetStateProperty.all<Color>(Colors.white),
                       ),
                       child: SizedBox(
                         width: double.infinity,
@@ -150,24 +166,6 @@ class _RegisterViewState extends State<RegisterView> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.pressed)) {                            
-                            return const Color.fromARGB(255, 95, 95, 95);
-                          }                          
-                          return Colors.black;
-                        }),
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, LoginView.id);
-                      },
-                      child: const Text('Volver'),
-                    ),
                   ],
                 ),
               ),
