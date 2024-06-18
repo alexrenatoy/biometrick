@@ -1,8 +1,10 @@
+import 'package:biometrick/views/admin/main_view.dart';
 import 'package:biometrick/views/assistance.dart';
 import 'package:biometrick/views/auth.dart';
+import 'package:biometrick/views/auth/login_view.dart';
+import 'package:biometrick/views/auth/register.dart';
 import 'package:biometrick/views/home.dart';
 import 'package:flutter/material.dart';
-
 
 class Router {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -11,20 +13,31 @@ class Router {
         return MaterialPageRoute(
           builder: (_) => Home(),
         );
+      case RegisterView.id:
+        return MaterialPageRoute(
+          builder: (_) => RegisterView(),
+        );
       case AssistanceView.id:
         return MaterialPageRoute(
           builder: (_) => AssistanceView(),
         );
+      case AdminView.id:
+        return MaterialPageRoute(
+          builder: (_) => AdminView(),
+        );
+      case LoginView.id:
+        return MaterialPageRoute(
+          builder: (_) => LoginView(),
+        );
       case AuthBiometric.id:
-        // Si la ruta requiere un valor (cedula en este caso), puedes pasarla a través de arguments
         if (settings.arguments != null && settings.arguments is String) {
           String idUser = settings.arguments as String;
           return MaterialPageRoute(
             builder: (_) => AuthBiometric(idUser: idUser),
           );
         }
-        // Manejo de error o redireccionar a una página por defecto si no se proporciona la cédula
-        return _errorRoute(); // Ejemplo de función _errorRoute() que muestra una página de error
+
+        return _errorRoute();
       default:
         // Manejo de ruta no encontrada
         return _errorRoute();

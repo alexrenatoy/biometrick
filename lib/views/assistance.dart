@@ -1,6 +1,8 @@
 import 'package:biometrick/utils/form_utils.dart';
 import 'package:biometrick/utils/validators.dart';
+import 'package:biometrick/views/admin/main_view.dart';
 import 'package:biometrick/views/auth.dart';
+import 'package:biometrick/views/auth/login_view.dart';
 import 'package:flutter/material.dart';
 
 class AssistanceView extends StatefulWidget {
@@ -12,7 +14,9 @@ class AssistanceView extends StatefulWidget {
 }
 
 class _AssistanceView extends State<AssistanceView> {
-  final TextEditingController _cedulaController = TextEditingController();
+  final TextEditingController _cedulaController = TextEditingController();  
+  bool _isAdminButtonVisible = false;
+  int _tapCount = 0;
 
   Widget buildTextFormField({
     required TextEditingController controller,
@@ -55,6 +59,18 @@ class _AssistanceView extends State<AssistanceView> {
     );
   }
 
+    void _handleAdminTap() {
+    setState(() {
+      _tapCount++;
+      if (_tapCount >= 5) {
+        _isAdminButtonVisible = true;
+        _tapCount = 0;
+      }
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +82,14 @@ class _AssistanceView extends State<AssistanceView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            GestureDetector(
+              onTap: _handleAdminTap,
+              child: Text(
+              'Identificate',
+              style: TextStyle(fontSize: 24),
+            ),
+            ),
+            const SizedBox(height: 20.0),
             InputField(
               controller: _cedulaController,
               labelText: 'Número de identificación',
@@ -85,6 +109,23 @@ class _AssistanceView extends State<AssistanceView> {
               },
               child: const Text('Registrar'),
             ),
+            if (_isAdminButtonVisible)
+              ElevatedButton(
+                style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                    (Set<WidgetState> states) {
+                  if (states.contains(WidgetState.pressed)) {
+                    return const Color.fromARGB(255, 95, 95, 95);
+                  }
+                  return Colors.black;
+                }),
+                foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+              ),
+                onPressed: () {
+                Navigator.pushNamed(context, LoginView.id);
+              },
+                child: const Text('Admin'),
+              ),
           ],
         ),
       ),

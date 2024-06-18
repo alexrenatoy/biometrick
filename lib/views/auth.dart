@@ -1,8 +1,7 @@
 import 'package:biometrick/views/assistance.dart';
-import 'package:biometrick/views/firebase_service.dart';
+import 'package:biometrick/services/firebase_service.dart';
 import 'package:biometrick/views/home.dart';
 import 'package:local_auth_android/local_auth_android.dart';
-import 'package:local_auth_darwin/local_auth_darwin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
@@ -68,7 +67,9 @@ class _AuthBiometricState extends State<AuthBiometric> {
         _checkBio = bio;
       });
       print('Biometrics - $_checkBio');
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _listBioFingerType() async {
@@ -109,7 +110,7 @@ class _AuthBiometricState extends State<AuthBiometric> {
   }
 
   void _uploadUserData() async {
-    String user = widget.idUser;
+    String user = widget.idUser;    
     print(user);
     try {
       bool success = await addAssistence(context, user);

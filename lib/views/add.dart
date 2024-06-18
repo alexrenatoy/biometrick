@@ -1,4 +1,4 @@
-import 'package:biometrick/views/firebase_service.dart';
+import 'package:biometrick/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 
 class Add extends StatefulWidget {

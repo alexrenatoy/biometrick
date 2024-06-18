@@ -1,6 +1,6 @@
 
-import 'package:biometrick/views/login_view.dart';
-import 'package:biometrick/views/register.dart';
+import 'package:biometrick/views/auth/login_view.dart';
+import 'package:biometrick/views/auth/register.dart';
 import 'package:flutter/material.dart';
 
 class LandPageView extends StatelessWidget {

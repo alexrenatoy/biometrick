@@ -2,12 +2,12 @@
 import 'package:biometrick/services/auth_service.dart';
 import 'package:biometrick/utils/form_utils.dart';
 import 'package:biometrick/utils/validators.dart';
-import 'package:biometrick/views/main_view.dart';
-import 'package:biometrick/views/register.dart';
+import 'package:biometrick/views/admin/main_view.dart';
+import 'package:biometrick/views/auth/register.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {
-  static String id = 'login_view';
+  static const String id = 'login_view';
   const LoginView({super.key});
 
   @override
@@ -22,7 +22,7 @@ class _LoginViewState extends State<LoginView> {
 
   // Función para realizar la autenticación
   Future<void> _login() async {
-    // Validar los campos del formulario
+    
     if (_formKey.currentState?.validate() ?? false) {
       final String username = _usernameController.text;
       final String password = _passwordController.text;
@@ -32,8 +32,11 @@ class _LoginViewState extends State<LoginView> {
 
       // Si las credenciales son válidas, navegar a la pantalla principal
       if (isAuthenticated) {
-        Navigator.pushNamed(context, MainView.id);
-        
+        setState(() {          
+        Navigator.pushNamed(context, AdminView.id);
+        });
+        _usernameController.clear();
+        _passwordController.clear();
       } else {
         // Si las credenciales no son válidas, mostrar un mensaje de error al usuario
         showDialog(
@@ -78,7 +81,7 @@ class _LoginViewState extends State<LoginView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Don Gestin',
+                  'Biometrick',
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
@@ -127,26 +130,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   onPressed: _login,
                   child: const Text('Iniciar Sesión'),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text('¿Aún no tienes una cuenta?',
-                    style: TextStyle(color: Colors.black)),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, RegisterView.id);
-                  },
-                  child: const Text(
-                    'Registrate aquí!!',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+                ),         
               ],
             ),
           ),

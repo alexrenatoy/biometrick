@@ -1,13 +1,13 @@
 import 'package:biometrick/utils/form_utils.dart';
 import 'package:biometrick/utils/validators.dart';
 import 'package:biometrick/views/assistance.dart';
-import 'package:biometrick/views/firebase_service.dart';
+import 'package:biometrick/services/firebase_service.dart';
 import 'package:biometrick/views/home.dart';
-import 'package:biometrick/views/login_view.dart';
+
 import 'package:flutter/material.dart';
 
 class RegisterView extends StatefulWidget {
-  static String id = 'register_view';
+  static const String id = 'register_view';
   const RegisterView({super.key});
 
   @override
@@ -32,12 +32,16 @@ class _RegisterViewState extends State<RegisterView> {
       try {
         bool res = await addNewUser(idUser, name, email, password);
         if (res) {
-          Navigator.pushNamed(context, AssistanceView.id);          
+          Navigator.pushNamed(context, AssistanceView.id);
         } else {
-          Navigator.pushNamed(context, Home.id);   
+          Navigator.pushNamed(context, Home.id);
         }
+        _iduserController.clear();
+        _usernameController.clear();
+        _emailController.clear();
+        _passwordController.clear();
       } catch (e) {
-        print(e);        
+        print(e);
         //ventana de error
       }
     }
@@ -93,7 +97,7 @@ class _RegisterViewState extends State<RegisterView> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
-                'Don Gestin',
+                'Biometrick',
                 style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
@@ -120,6 +124,7 @@ class _RegisterViewState extends State<RegisterView> {
                       suffixIcon: Icons.perm_identity,
                       validator: validateNumericField,
                     ),
+                    const SizedBox(height: 16),
                     InputField(
                       controller: _usernameController,
                       labelText: 'Nickname',
@@ -145,9 +150,8 @@ class _RegisterViewState extends State<RegisterView> {
                     ElevatedButton(
                       onPressed: _register,
                       style: ButtonStyle(
-                        backgroundColor:
-                            WidgetStateProperty.resolveWith<Color>(
-                                (Set<WidgetState> states) {
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                            (Set<WidgetState> states) {
                           if (states.contains(WidgetState.pressed)) {
                             return Color.fromARGB(255, 95, 95, 95);
                           }
@@ -165,7 +169,24 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 6),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                            (Set<WidgetState> states) {
+                          if (states.contains(WidgetState.pressed)) {
+                            return const Color.fromARGB(255, 95, 95, 95);
+                          }
+                          return Colors.black;
+                        }),
+                        foregroundColor:
+                            WidgetStateProperty.all<Color>(Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, Home.id);
+                      },
+                      child: const Text('Cancelar'),
+                    ),
                   ],
                 ),
               ),

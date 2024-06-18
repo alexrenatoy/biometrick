@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:biometrick/views/add.dart';
 import 'package:biometrick/views/assistance.dart';
-import 'package:biometrick/views/firebase_service.dart';
-import 'package:biometrick/views/register.dart';
+import 'package:biometrick/services/firebase_service.dart';
+import 'package:biometrick/views/auth/register.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -70,6 +70,7 @@ class _HomePageState extends State<Home> {
               ),
               onPressed: () {
                 Navigator.pushNamed(context, AssistanceView.id);
+                Navigator.of(context).pop();
               },
               child: const Text('Registrarme'),
             ),
