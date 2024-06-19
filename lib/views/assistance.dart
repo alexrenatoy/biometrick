@@ -99,11 +99,12 @@ class _AssistanceView extends State<AssistanceView> {
             const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
+                String user = _cedulaController.text;
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          AuthBiometric(idUser: _cedulaController.text)),
+                          AuthBiometric(idUser: user)),
                 );
                 _cedulaController.clear();
               },

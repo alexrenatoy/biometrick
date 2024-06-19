@@ -105,25 +105,55 @@ class _AuthBiometricState extends State<AuthBiometric> {
       print('Error en autenticación biométrica: $e');
     }
     if (_isAuthenticated) {
-      _uploadUserData();            
-    }
-  }
-
-  void _uploadUserData() async {
-    String user = widget.idUser;    
-    print(user);
-    try {
-      bool success = await addAssistence(context, user);
+      String user = widget.idUser;    
+      print('user, $user');
+              try {
+      bool success = await addAssistence(user);
       if (success){
-        Navigator.pop(context, Home.id);
-      } else {
-        Navigator.pop(context, AssistanceView.id);
+        _showSavingsModal(success);
+      } else {        
       }
-
-
     } catch (e) {
       print('Error al subir datos de usuariio--------');     
     }
+    }
   }
+void _showSavingsModal(bool success) {
+    showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Registro de Usuario'),
+        content: Text(success 
+            ? 'Usuario registrado' 
+            : 'No se encontró usuario'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Cerrar'),
+            onPressed: () {
+              Navigator.pop(context, Home.id);
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+  }
+  // void _uploadUserData() async {
+  //   String user = widget.idUser;    
+  //   print('user, $user');
+  //   try {
+  //     bool success = await addAssistence(context, user);
+  //     if (success){
+        
+  //     } else {
+  //       Navigator.pop(context, AssistanceView.id);
+  //     }
+  //   } catch (e) {
+  //     print('Error al subir datos de usuariio--------');     
+  //   }
+  // }
 
 }
+

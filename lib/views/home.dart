@@ -69,8 +69,7 @@ class _HomePageState extends State<Home> {
                 foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
               ),
               onPressed: () {
-                Navigator.pushNamed(context, AssistanceView.id);
-                Navigator.of(context).pop();
+                Navigator.pushNamed(context, AssistanceView.id);                
               },
               child: const Text('Registrarme'),
             ),
